@@ -1,14 +1,5 @@
 const puppeteer = require('puppeteer-extra');
 const stealthPlugin = require('puppeteer-extra-plugin-stealth');
-const fs = require('fs');
-
-fs.readFile('subespecialidades.txt', 'utf8', function(err, data) {
-  if (err) throw err;
-  const lines = data.trim().split('\n');
-  const subespecialidades = lines.map((line) => line.trim());
-  console.log(subespecialidades);
-});
-
 puppeteer.use(stealthPlugin());
 
 (async () => {
@@ -22,35 +13,34 @@ puppeteer.use(stealthPlugin());
   await page.type('#password', 'CRFR100*', { delay: 100 });
   await page.click('button[type="submit"]');
   await page.waitForNavigation();
-  // console.log("Logged in succesfully");
+  console.log("Logged in succesfully");
 
   await page.goto('https://app.cursofuturosresidentes.com/courses/cirugia-general/');
   await page.waitForSelector('text/Expandir todo')
   await page.click('text/Expandir todo')
-  // console.log("Especiality expanded")
+  console.log("Especiality expanded")
 
   const topics = await page.$$eval('#main-content a:not([href*=quizzes]', (anchors) =>
     anchors
       .filter((anchor) => anchor.href.includes('topic')) 
       .map((anchor) => anchor.href)
   );
-  // console.log(topics);
+  console.log("topics extracted");
   
   const videos = [];
-  for (let topic in topics){
-    await page.goto(topic)
-    await page.waitForNavigation();
+  for (const topic of topics) {
+    await page.goto(topic);
     const html = await page.content();
     const lines = html.split('\n');
-    let filteredLines = lines.filter((line) => line.includes(':720'));
-    videos.push(filteredLines);
-  };
-  
-  if (videos.length) {
-    console.log(videos);
-  } else {
-    console.log("No videos found.");
+    for (const line of lines) {
+      if (line.includes(':720')) {
+        videos.push(line);
+        break;
+      }
+    }
   }
+
+  console.log(videos);
   
   await browser.close();
 })();
