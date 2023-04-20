@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer-extra');
 const stealthPlugin = require('puppeteer-extra-plugin-stealth');
+const fs = require('fs')
 puppeteer.use(stealthPlugin());
 
 (async () => {
@@ -15,7 +16,8 @@ puppeteer.use(stealthPlugin());
   await page.waitForNavigation();
   console.log("Logged in succesfully");
 
-  await page.goto('https://app.cursofuturosresidentes.com/courses/cirugia-general/');
+  const subespecialidad = 'https://app.cursofuturosresidentes.com/courses/cirugia-general/'
+  await page.goto(subespecialidad);
   await page.waitForSelector('text/Expandir todo')
   await page.click('text/Expandir todo')
   console.log("Especiality expanded")
@@ -31,16 +33,17 @@ puppeteer.use(stealthPlugin());
   for (const topic of topics) {
     await page.goto(topic);
     const html = await page.content();
-    const lines = html.split('\n');
-    for (const line of lines) {
-      if (line.includes(':720')) {
-        videos.push(line);
-        break;
-      }
-    }
-  }
-
+    const regex = /https:\/\/player\.vimeo\.com\/video\/\w{9}/;
+    const match = html.match(regex)
+    
+    videos.push(match[0]);
+    
+  };
   console.log(videos);
-  
   await browser.close();
+
+  fs.writeFile('cirugía.txt', videos.join('\n'), (err) => {
+    if (err) throw err;
+    console.log('Videos saved to file!');
+  });
 })();
