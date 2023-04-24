@@ -13,7 +13,6 @@ puppeteer.use(stealthPlugin());
   await page.type('#username', 'carlosduribe@hotmail.com', { delay: 100 });
   await page.type('#password', 'CRFR100*', { delay: 100 });
   await page.click('button[type="submit"]');
-  await page.waitForNavigation();
   console.log("Logged in succesfully");
 
   const subespecialidad = 'https://app.cursofuturosresidentes.com/courses/cirugia-general/'
@@ -30,7 +29,7 @@ puppeteer.use(stealthPlugin());
   console.log("topics extracted");
   fs.writeFile('topics.txt', topics.join('\n'), (err) => {
     if (err) throw err;
-    console.log('Videos saved to file!');
+    console.log('Topics saved to file!');
   });
 
   const videos = [];
