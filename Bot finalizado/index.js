@@ -28,7 +28,7 @@ puppeteer.use(stealthPlugin());
       .map((anchor) => anchor.href)
   );
   console.log("topics extracted");
-  fs.writeFile('cirugía_clases.txt', topics.join('\n'), (err) => {
+  fs.writeFile('topics.txt', topics.join('\n'), (err) => {
     if (err) throw err;
     console.log('Videos saved to file!');
   });
@@ -46,7 +46,7 @@ puppeteer.use(stealthPlugin());
   console.log(videos);
   await browser.close();
 
-  fs.writeFile('cirugía.txt', videos.join('\n'), (err) => {
+  fs.writeFile('videos.txt', videos.join('\n'), (err) => {
     if (err) throw err;
     console.log('Videos saved to file!');
   });

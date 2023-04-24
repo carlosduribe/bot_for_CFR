@@ -1,14 +1,27 @@
 from vimeo_downloader import Vimeo
 
-vimeo_url = 'https://player.vimeo.com/video/521556449'
-embedded_on = 'https://app.cursofuturosresidentes.com/courses/cirugia-general/lessons/trauma-de-torax/topic/valoracion-y-manejo-del-trauma-de-torax/'
+videos = []
+topics = []
+videos_and_topics = []
 
-v = Vimeo(vimeo_url, embedded_on)
-stream = v.streams  
-    
-for s in stream:
-    if s.quality == '720p':
-        s.download(download_directory='video', filename=embedded_on)
-        break
-    else:  
-        print('quality not found')
+with open('videos.txt', 'r') as file:
+  content = file.read()
+  videos.append(content.split('\n'))
+
+with open('clases.txt', 'r') as file:
+  content = file.read()
+  topics.append(content.split('\n'))
+
+for i in range(len(topics)):
+  videos_and_topics.append((topics[i], videos[i]))
+
+for i in videos_and_topics:
+  v = Vimeo(i)
+  stream = v.streams  
+      
+  for s in stream:
+      if s.quality == '720p':
+          s.download(download_directory='video', filename=i[1][47:])
+          break
+      else:  
+          print('quality not found')
