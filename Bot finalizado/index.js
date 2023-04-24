@@ -42,7 +42,7 @@ puppeteer.use(stealthPlugin());
     videos.push(match[0]);
     
   };
-  console.log(videos);
+  console.log('videos extracted');
   await browser.close();
 
   fs.writeFile('videos.txt', videos.join('\n'), (err) => {
