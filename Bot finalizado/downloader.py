@@ -8,7 +8,7 @@ with open('videos.txt', 'r') as file:
   content = file.read()
   videos.append(content.split('\n'))
 
-with open('clases.txt', 'r') as file:
+with open('topics.txt', 'r') as file:
   content = file.read()
   topics.append(content.split('\n'))
 
