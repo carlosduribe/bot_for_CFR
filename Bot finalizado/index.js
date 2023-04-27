@@ -10,7 +10,7 @@ puppeteer.use(stealthPlugin());
   await page.goto('https://app.cursofuturosresidentes.com/');
   await page.waitForNavigation();
   await page.waitForSelector('#username')
-  await page.type('#username', 'carlosduribe@hotmail.com', { delay: 100 });
+  await page.type('#username', 'ocristianandres_0495@hotmail.com', { delay: 100 });
   await page.type('#password', 'CRFR100*', { delay: 100 });
   await page.click('button[type="submit"]');
   console.log("Logged in succesfully");
