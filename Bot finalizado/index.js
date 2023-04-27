@@ -31,11 +31,15 @@ puppeteer.use(stealthPlugin());
 
   const videos = [];
   for (const topic of topics) {
-    await page.goto(topic);
-    const html = await page.content();
-    const regex = /https:\/\/player\.vimeo\.com\/video\/\w{9}/;
-    const match = html.match(regex);
-    videos.push(match[0]);
+    try {
+      await page.goto(topic);
+      const html = await page.content();
+      const regex = /https:\/\/player\.vimeo\.com\/video\/\w{9}/;
+      const match = html.match(regex);
+      videos.push(match[0]);
+    } catch (e) {
+      console.log('There is a topic without extracted links')
+    }
     
   };
   console.log('videos extracted');
