@@ -2,26 +2,21 @@ from vimeo_downloader import Vimeo
 
 videos = []
 topics = []
-videos_and_topics = []
 
-with open('videos.txt', 'r') as file:
-  content = file.read()
-  videos.append(content.split('\n'))
+with open('./Pediatría/videos.txt', 'r') as file:
+  videos = file.read().split('\n')
 
-with open('topics.txt', 'r') as file:
-  content = file.read()
-  topics.append(content.split('\n'))
+with open('./Pediatría/topics.txt', 'r') as file:
+  topics = file.read().split('\n')
 
-for i in range(len(topics)):
-  videos_and_topics.append((topics[i], videos[i]))
-
-for i in videos_and_topics:
-  v = Vimeo(videos_and_topics[i])
+for i in range(len(videos)):
+  v = Vimeo(videos[i], topics[i])
   stream = v.streams  
-      
+    
   for s in stream:
-      if s.quality == '720p':
-          s.download(download_directory='video', filename=videos_and_topics[i][1][47:])
-          break
-      else:  
-          print('quality not found')
+    if s.quality == '720p':
+      name = str(topics[i][47:].replace('-', ' ').replace('/', '-'))
+      s.download(download_directory='./Pediatría', filename=name)
+      break
+    else:  
+      print('quality not found')
